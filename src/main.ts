@@ -155,8 +155,9 @@ export class SportsRadar {
 			});
 
 			if (!response.ok) {
+				const err = await response.text();
 				throw new Error(`[Fetch] ${response.status}`, {
-					cause: response.text(),
+					cause: err,
 				});
 			}
 
