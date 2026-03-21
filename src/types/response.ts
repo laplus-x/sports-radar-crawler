@@ -33,7 +33,6 @@ export interface CategoryData {
 	_rcid: number;
 	name: string;
 	cc?: CountryCodeData;
-	/** @deprecated */
 	countrycode?: CountryCodeData;
 	tournaments: TournamentData[];
 	uniquetournaments: Record<string, TournamentData>;
@@ -114,7 +113,6 @@ export interface TeamData {
 	haslogo: boolean;
 	surname: string;
 	cc?: CountryCodeData;
-	/** @deprecated */
 	countrycode?: CountryCodeData;
 }
 
