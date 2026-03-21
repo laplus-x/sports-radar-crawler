@@ -7,7 +7,7 @@ export interface Doc<T> {
 	event: string;
 	_dob: number;
 	_maxage: number;
-	_configid: string;
+	_configid?: string;
 	data: T | ErrorData;
 }
 
@@ -32,8 +32,8 @@ export interface CategoryData {
 	_sid: number;
 	_rcid: number;
 	name: string;
-	cc?: CountryCodeData;
-	countrycode?: CountryCodeData;
+	cc?: null | CountryCodeData;
+	countrycode?: null | CountryCodeData;
 	tournaments: TournamentData[];
 	uniquetournaments: Record<string, TournamentData>;
 	_sk: boolean;
@@ -45,10 +45,10 @@ export interface CountryCodeData {
 	a2: string;
 	name: string;
 	a3: string;
-	ioc?: string;
+	ioc: null | string;
 	continentid: number;
 	continent: string;
-	population?: number;
+	population: null | number;
 }
 
 export interface TournamentData {
@@ -56,14 +56,14 @@ export interface TournamentData {
 	_id: number;
 	_sid: number;
 	_rcid: number;
-	_isk: number;
-	_tid: number;
+	_isk?: null | number;
+	_tid?: null | number;
 	_utid: number;
 	name: string;
-	roundbyround: boolean;
-	seasonid?: number;
-	currentseason?: number;
-	friendly?: boolean;
+	roundbyround?: null | boolean;
+	seasonid?: null | number;
+	currentseason: null | number;
+	friendly?: null | boolean;
 	_sk: boolean;
 }
 
@@ -103,17 +103,17 @@ export interface TeamData {
 	_doc: string;
 	_id: number;
 	_sid: number;
-	uid: number;
-	virtual: boolean;
+	uid?: number;
+	virtual?: boolean;
 	name: string;
 	mediumname: string;
 	abbr: string;
-	nickname?: string;
+	nickname: null | string;
 	iscountry: boolean;
 	haslogo: boolean;
-	surname: string;
-	cc?: CountryCodeData;
-	countrycode?: CountryCodeData;
+	surname?: null | string;
+	cc?: null | CountryCodeData;
+	countrycode?: null | CountryCodeData;
 }
 
 export interface MatchData {
@@ -129,20 +129,20 @@ export interface MatchData {
 		home: TeamData;
 		away: TeamData;
 	};
-	round?: number;
-	roundname?: RoundData;
+	round: null | number;
+	roundname?: null | RoundData;
 	tobeannounced: boolean;
 	postponed: boolean;
 	stadiumid: number;
 	walkover: boolean;
 	retired: boolean;
-	comment?: string;
+	comment: null | string;
 	inlivescore: boolean;
 	disqualified: boolean;
 	neutralground: boolean;
 	canceled: boolean;
-	bestof: number;
-	periods?: Record<
+	bestof?: null | number;
+	periods: null | Record<
 		string,
 		{
 			home: number;
@@ -150,31 +150,31 @@ export interface MatchData {
 		}
 	>;
 	result: {
-		home?: number;
-		away?: number;
+		home: null | number;
+		away: null | number;
 		period: string;
-		winner?: "home" | "away";
+		winner: null | "home" | "away";
 	};
-	status?: string;
+	status: null | string;
 	time: TimestampData;
-	numberofperiods?: number;
+	numberofperiods: null | number;
 	_seasonid: number;
 }
 
 export interface RoundData {
 	_doc: string;
 	_id: number;
-	displaynumber?: number;
+	displaynumber: null | number;
 	name: string;
 	shortname: string;
-	cuproundnumber?: number;
+	cuproundnumber: null | number;
 	statisticssortorder: number;
 }
 
 export interface EventData {
 	_doc: string;
 	_id: number;
-	_scoutid?: string;
+	_scoutid: null | string;
 	_sid: number;
 	_rcid: number;
 	_tid: number;
@@ -187,13 +187,13 @@ export interface EventData {
 	disabled: number;
 	time: number;
 	seconds: number;
-	injurytime?: number;
+	injurytime: null | number;
 	team: string;
 	name: string;
 	result?: {
-		home: number;
-		away: number;
-		winner?: "home" | "away";
+		home: null | number;
+		away: null | number;
+		winner?: null | "home" | "away";
 	};
 	status?: {
 		_doc: string;
@@ -214,11 +214,11 @@ export interface EventData {
 		number: number;
 		pitchnumber: number;
 	};
-	bases?: Record<
+	bases?: null | Record<
 		string,
 		{
 			occupied: boolean;
-			player_id?: number;
+			player_id?: null | number;
 		}
 	>;
 	batter?: {
@@ -263,9 +263,9 @@ export interface EventData {
 	playerid?: number;
 	commentary?: string;
 	runner?: {
-		starting_base?: number;
-		ending_base?: number;
-		playerid?: number;
+		starting_base?: null | number;
+		ending_base?: null | number;
+		playerid?: null | number;
 	};
 	advancement_type?: string;
 	hits?: {
@@ -275,8 +275,8 @@ export interface EventData {
 	base_loadout?: Record<string, boolean>;
 	run_type?: string;
 	runs?: number;
-	positionid?: string;
-	goaltypeid?: string;
+	positionid?: null | string;
+	goaltypeid?: null | string;
 	scorer?: PersonData;
 	assists?: PersonData[];
 	header?: boolean;
@@ -292,7 +292,7 @@ export interface EventData {
 		name: string;
 		shortName: string;
 	};
-	periodnumber?: number;
+	periodnumber?: null | number;
 	pointtype?: string;
 	pointflag?: string;
 	pointflagtranslation?: string;
@@ -322,5 +322,5 @@ export interface PersonData {
 	position: PositionData;
 	primarypositiontype: string;
 	haslogo: boolean;
-	fullname?: string;
+	fullname?: null | string;
 }
