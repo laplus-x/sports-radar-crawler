@@ -1,0 +1,39 @@
+{
+	"name": "sports-radar-crawler",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"files": [
+		"dist"
+	],
+	"main": "./dist/index.umd.cjs",
+	"module": "./dist/index.js",
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"require": "./dist/index.umd.cjs"
+		}
+	},
+	"scripts": {
+		"prepare": "ts-patch install",
+		"dev": "vite",
+		"build": "tsc && vite build",
+		"preview": "vite preview",
+		"check": "biome check --write"
+	},
+	"dependencies": {
+		"ts-results": "^3.3.0",
+		"typia": "^12.0.1"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.4.8",
+		"@types/node": "^25.5.0",
+		"@typia/unplugin": "^12.0.1",
+		"ts-patch": "^3.3.0",
+		"typescript": "~5.9.3",
+		"vite": "^8.0.1",
+		"vite-plugin-checker": "^0.12.0",
+		"vite-plugin-dts": "^4.5.4",
+		"vitest": "^4.1.0"
+	}
+}
