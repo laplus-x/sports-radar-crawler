@@ -297,19 +297,20 @@ export class SportsRadar {
 		const { sportId, categoryId } = params;
 		const url = `${this.base}/${this.provider}/${this.lang}/${this.tz}/gismo/config_tree_mini/41/0/${sportId}/${categoryId}`;
 		const result = await this.request(url);
-		return result.andThen((i) => {
-			const valid = validate<{ realcategories: CategoryData[] }[]>(i);
-			if (!valid.success) {
-				const err = new Error(`[Typia] ${valid.errors.at(0)?.description}`, {
-					cause: valid.errors.at(0),
-				});
-				return Err(err);
-			}
-			const data = valid.data.flatMap((i) =>
-				i.realcategories.flatMap((j) => j.tournaments),
+		return result
+			.andThen((i) => {
+				const valid = validate<{ realcategories: CategoryData[] }[]>(i);
+				if (!valid.success) {
+					const err = new Error(`[Typia] ${valid.errors.at(0)?.description}`, {
+						cause: valid.errors.at(0),
+					});
+					return Err(err);
+				}
+				return Ok(valid.data);
+			})
+			.map((i) =>
+				i.flatMap((j) => j.realcategories.flatMap((k) => k.tournaments)),
 			);
-			return Ok(data);
-		});
 	}
 
 	/**
@@ -342,18 +343,20 @@ export class SportsRadar {
 		const url = `${this.base}/${this.provider}/${this.lang}/${this.tz}/gismo/stats_season_meta/${seasonId}`;
 		const result = await this.request(url);
 
-		return result.andThen((i) => {
-			const valid = validate<{
-				season: SeasonData;
-			}>(i);
-			if (!valid.success) {
-				const err = new Error(`[Typia] ${valid.errors.at(0)?.description}`, {
-					cause: valid.errors.at(0),
-				});
-				return Err(err);
-			}
-			return Ok(valid.data.season);
-		});
+		return result
+			.andThen((i) => {
+				const valid = validate<{
+					season: SeasonData;
+				}>(i);
+				if (!valid.success) {
+					const err = new Error(`[Typia] ${valid.errors.at(0)?.description}`, {
+						cause: valid.errors.at(0),
+					});
+					return Err(err);
+				}
+				return Ok(valid.data);
+			})
+			.map((i) => i.season);
 	}
 
 	/**
@@ -386,18 +389,20 @@ export class SportsRadar {
 		const url = `${this.base}/${this.provider}/${this.lang}/${this.tz}/gismo/stats_season_teams2/${seasonId}`;
 		const result = await this.request(url);
 
-		return result.andThen((i) => {
-			const valid = validate<{
-				teams: TeamData[];
-			}>(i);
-			if (!valid.success) {
-				const err = new Error(`[Typia] ${valid.errors.at(0)?.description}`, {
-					cause: valid.errors.at(0),
-				});
-				return Err(err);
-			}
-			return Ok(valid.data.teams);
-		});
+		return result
+			.andThen((i) => {
+				const valid = validate<{
+					teams: TeamData[];
+				}>(i);
+				if (!valid.success) {
+					const err = new Error(`[Typia] ${valid.errors.at(0)?.description}`, {
+						cause: valid.errors.at(0),
+					});
+					return Err(err);
+				}
+				return Ok(valid.data);
+			})
+			.map((i) => i.teams);
 	}
 
 	/**
@@ -430,29 +435,32 @@ export class SportsRadar {
 		const url = `${this.base}/${this.provider}/${this.lang}/${this.tz}/gismo/stats_season_fixtures2/${seasonId}`;
 		const result = await this.request(url);
 
-		return result.andThen((i) => {
-			const valid = validate<{
-				matches: MatchData[];
-			}>(i);
-			if (!valid.success) {
-				const err = new Error(`[Typia] ${valid.errors.at(0)?.description}`, {
-					cause: valid.errors.at(0),
-				});
-				return Err(err);
-			}
+		return result
+			.andThen((i) => {
+				const valid = validate<{
+					matches: MatchData[];
+				}>(i);
+				if (!valid.success) {
+					const err = new Error(`[Typia] ${valid.errors.at(0)?.description}`, {
+						cause: valid.errors.at(0),
+					});
+					return Err(err);
+				}
 
-			const set = new Set();
-			const data = valid.data.matches
-				.filter((k) => {
-					if (!k.roundname || set.has(k.roundname._id)) {
-						return false;
-					}
-					set.add(k.roundname._id);
-					return true;
-				})
-				.map((j) => j.roundname);
-			return Ok(data);
-		});
+				return Ok(valid.data);
+			})
+			.map((i) => {
+				const set = new Set();
+				return i.matches
+					.filter((j) => {
+						if (!j.roundname || set.has(j.roundname._id)) {
+							return false;
+						}
+						set.add(j.roundname._id);
+						return true;
+					})
+					.map((k) => k.roundname);
+			});
 	}
 
 	/**
@@ -485,18 +493,20 @@ export class SportsRadar {
 		const url = `${this.base}/${this.provider}/${this.lang}/${this.tz}/gismo/stats_season_fixtures2/${seasonId}`;
 		const result = await this.request(url);
 
-		return result.andThen((i) => {
-			const valid = validate<{
-				matches: MatchData[];
-			}>(i);
-			if (!valid.success) {
-				const err = new Error(`[Typia] ${valid.errors.at(0)?.description}`, {
-					cause: valid.errors.at(0),
-				});
-				return Err(err);
-			}
-			return Ok(valid.data.matches);
-		});
+		return result
+			.andThen((i) => {
+				const valid = validate<{
+					matches: MatchData[];
+				}>(i);
+				if (!valid.success) {
+					const err = new Error(`[Typia] ${valid.errors.at(0)?.description}`, {
+						cause: valid.errors.at(0),
+					});
+					return Err(err);
+				}
+				return Ok(valid.data);
+			})
+			.map((i) => i.matches);
 	}
 
 	/**
@@ -529,17 +539,20 @@ export class SportsRadar {
 		const url = `${this.base}/${this.provider}/${this.lang}/${this.tz}/gismo/stats_match_timeline/${matchId}`;
 		const result = await this.request(url);
 
-		return result.andThen((i) => {
-			const valid = validate<{
-				events: EventData[];
-			}>(i);
-			if (!valid.success) {
-				const err = new Error(`[Typia] ${valid.errors.at(0)?.description}`, {
-					cause: valid.errors.at(0),
-				});
-				return Err(err);
-			}
-			return Ok(valid.data.events);
-		});
+		return result
+			.andThen((i) => {
+				const valid = validate<{
+					events: EventData[];
+				}>(i);
+				if (!valid.success) {
+					const err = new Error(`[Typia] ${valid.errors.at(0)?.description}`, {
+						cause: valid.errors.at(0),
+					});
+					return Err(err);
+				}
+				return Ok(valid.data);
+			})
+
+			.map((i) => i.events);
 	}
 }
